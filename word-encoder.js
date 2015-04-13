@@ -69,7 +69,7 @@ function decode (bytes, length, firstLetterIsUppercase) {
 		nextByteIndex = Math.floor(charCount * 5 / 8);
 		shiftBy = (nextByteIndex + 2) * 8 - ((charCount + 1) * 5);
 		if(nextByteIndex === bytes.byteLength - 1) { //last byte
-			value = bytes[nextByteIndex];
+			value = bytes.getUint8(nextByteIndex);
 			shiftBy -= 8;
 		} else {
 			value = bytes.getUint16(nextByteIndex);
