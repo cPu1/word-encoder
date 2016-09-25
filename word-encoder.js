@@ -111,13 +111,10 @@ function decodeList(bytes) {
 }
 
 function buildFrame(word) {
-    var length = word.length,
-        codePoint = word.charCodeAt(0),
-        firstLetterUppercase = codePoint > 64 && codePoint < 91,
-        frame;
+    const firstLetter = word.charCodeAt(0);
 
-    frame = length << 2;
-    if (firstLetterUppercase) {
+    let frame = word.length << 2;
+    if (firstLetter > 64 && firstLetter < 91) { //uppercase
         frame |= 1 << 1; //set the 7th bit
     }
     return frame;
