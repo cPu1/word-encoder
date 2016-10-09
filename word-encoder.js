@@ -80,29 +80,24 @@ function encodeList(words) {
 }
 
 function decodeList(bytes) {
-    var frame,
-        wordLength,
-        bytesRequired,
-        pos = 1,
-        length = bytes.length,
-        decodedList = [],
-        firstLetterIsUppercase, //initCap
-        ignoresProtocol, //word wasn't encoded using the protocol
-        word;
+    let pos = 1;
+    const length = bytes.length,
+        decodedList = [];
 
     while (pos < length) {
-        frame = bytes[pos - 1];
-        wordLength = frame >> 2;
-        firstLetterIsUppercase = frame & 2;
-        ignoresProtocol = frame & 1;
+        const frame = bytes[pos - 1],
+            wordLength = frame >> 2,
+            ignoresProtocol = frame & 1; //word wasn't encoded using the protocol
+
+        let bytesRequired;
         if (ignoresProtocol) {
             decodedList.push(bytes.slice(pos, pos + wordLength).toString('utf8'));
             bytesRequired = wordLength;
         } else {
             bytesRequired = Math.ceil(wordLength * 5 / 8);
             //for any ECMAScript implementation supporting typed arrays. Node's Buffer is not part of ECMAScript
-            word = new DataView(new Uint8Array(bytes.slice(pos, pos + bytesRequired)).buffer);
-            decodedList.push(decode(word, wordLength, firstLetterIsUppercase));
+            const word = new DataView(new Uint8Array(bytes.slice(pos, pos + bytesRequired)).buffer);
+            decodedList.push(decode(word, wordLength, frame & 2));
         }
         pos += bytesRequired + 1;
     }
