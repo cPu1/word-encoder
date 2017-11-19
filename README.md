@@ -1,14 +1,14 @@
 # word-encoder
 Encode English words using fewer bytes with a bit-level protocol
 
-#Usage
+# Usage
 
 ```
 var wordEncoder = require('word-encoder'),
   encodedWords = wordEncoder.encodeList(aListOfWords),
   decodedWords = wordEncoder.decodeList(encodedWords);
 ```
-##Protocol
+## Protocol
 Each word in a list of words is prefixed with a 1-byte frame that specifies the word's length (6 bits), whether the first letter is uppercase (a proper noun) and whether the word is composed solely of lowercase alphabets.
 
 Words are encoded using a stream of characters and each character is encoded using 5 bits (1 << 5 === 32, enough to hold 26 letters).
